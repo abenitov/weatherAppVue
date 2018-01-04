@@ -2,13 +2,14 @@
     <div>
     <header>
         <nav>
-            <router-link class="link" to="">DASHBOARD</router-link>
-            <router-link class="link" to="/currentTemp">CURRENT_TEMP</router-link>
-            <router-link class="link" to="/history">RECORDS</router-link>
+            <router-link class="link" to="" v-t="'LIT_DASHBOARD'"></router-link> |
+            <router-link class="link" to="/currentTemp" v-t="'LIT_CURRENT_TEMP'"></router-link> |
+            <router-link class="link" to="/history" v-t="'LIT_RECORDS'"></router-link>
         </nav>
     </header>
     <main>
-        <h1>APP_TITLE</h1>
+        <h1 v-t="'LIT_APP_TITLE'"></h1>
+        <router-view></router-view>
     </main>
     <footer>
     </footer>
@@ -18,7 +19,7 @@
 export default {
     data() {
         return {
-            message : 'componente customizado'
+
         }
     }
 }

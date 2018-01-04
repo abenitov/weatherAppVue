@@ -1,5 +1,6 @@
 let path = require('path');
 let webpack = require('webpack');
+let copyWebpackPlugin = require('copy-webpack-plugin');
 
 
 let outputPath = './build';
@@ -24,11 +25,15 @@ if (env === 'production') {
     fileName = outputFilename.replace(/js/g, 'min.js');
 }
 
+plugins.push( new copyWebpackPlugin([{
+    from: 'src/public'
+}]));
+
 
 var config = {
 
     entry:{
-        app: './src/app.js'
+        app: './src/app/app.js'
     },
 
     output: {
@@ -49,7 +54,11 @@ var config = {
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
-            }
+            },
+            {
+                test: /\.(scss|sass)$/,
+                loader: ['style-loader', 'css-loader', 'sass-loader']
+            },
         ]
     },
 
@@ -60,6 +69,8 @@ var config = {
     },
 
     plugins: plugins
+
+    
 
 };
 

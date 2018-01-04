@@ -1,21 +1,21 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import customCom from './components/container.vue';
+import weatherDashboard from '../components/weather-dashboard.vue';
+import weatherDetails from '../components/weather-details.vue';
+import weatherRecords from '../components/weather-records.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/first/:message', component: {
-            template: '<span>hola {{$route.params.message}}</span>'
-        }
+        path: '', component: weatherDashboard
     },
     {
-        path: '/second', component: customCom
+        path: '/currentTemp', component: weatherDetails
     },
     {
-        path: '/third/:name', component: customCom
+        path: '/history', component: weatherRecords
     }
 ];
 

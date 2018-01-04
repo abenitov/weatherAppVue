@@ -1,40 +1,46 @@
 import Vue from 'vue';
-import Observable from 'rxjs';
+import Rx from 'rxjs/Rx';
 
-export class weatherService{
+import Environment from '../config/Environment';
+import WeatherStore from './weatherStore';
 
-    let tempDetailsData;
+export default class WeatherService {
 
-    let getAllMode = false;
+    constructor() {
+        console.log("init weatherService");
+        this.getAllMode = false;
+        this.getWeather();
+        this.weatherStore = new WeatherStore();
+        setInterval(this.getWeather, Environment.weatherAPI.refreshInterval);
+    }
+
+ getWeather() {
 
 
- getWeather = () => {
-
-
-    const getAll = this.getAllMode;
     let observables = [];
-
-    if (getAll) {
-        observables.push(this.http.get(Environment.weatherAPI.url));
+    if (this.getAllMode) {
+        observables.push(Vue.http.get(Environment.weatherAPI.url));
 
     } else {
         Environment.weatherAPI.cities.forEach( city => {
-            observables.push(Vue.http.get(Environment.weatherAPI.url + "/" + city).catch((resError) => {
+            observables.push(Rx.Observable.fromPromise(Vue.http.get(Environment.weatherAPI.url + "/" + city)).catch((resError) => {
                 console.error("Error in service response: " + JSON.stringify(resError));
                 const emptyResponse = undefined;
-                return Observable.of(emptyResponse);
+                return Rx.Observable.of(emptyResponse);
             }));
         });
     }
 
     this.tempDetailsData = [];
-    Observable.forkJoin(observables).subscribe((responses: Response[]) => {
-        for (const response  of responses){
+     Rx.Observable.forkJoin(observables).subscribe((responses) => {
+         console.log(responses);
+         for (const response  of responses){
+            console.log(response);
             if (!response) {
                 continue;
             }
 
-            if (getAll) {
+            if (this.getAllMode) {
                 for (const key in response.json()) {
                     this.processAPIResponse(response.json()[key]);
                 }
@@ -53,10 +59,10 @@ export class weatherService{
 
 };
 
- processAPIResponse = (weatherResponse) => {
+ processAPIResponse(weatherResponse)  {
 
     if (weatherResponse instanceof Object && weatherResponse.name !== undefined && weatherResponse.main !== undefined) {
-        this.tempDetailsData.push(new TempDetailData(weatherResponse.name, weatherResponse.main));
+        this.tempDetailsData.push(weatherResponse);
 
     } else {
         console.log("Invalid response: " + JSON.stringify(weatherResponse));
