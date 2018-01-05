@@ -7,6 +7,7 @@ import weatherRecords from './components/weather-records.vue';
 import router from './config/router';
 import i18n from './config/i18n';
 import WeatherService from './services/weatherService';
+import WeatherStore from "./services/weatherStore";
 
 
 import  '../public/style/app.scss';
@@ -18,6 +19,7 @@ Vue.component('weather-details', weatherDetails);
 Vue.component('weather-records', weatherRecords);
 
 new WeatherService();
+new WeatherStore();
 
 new Vue({
     el: '#app',

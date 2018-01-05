@@ -6,9 +6,9 @@
             </div>
         </div>
         <div class="row" v-if="recordWeatherTime">
-            <div class="col-md-12"><temp-details [weatherTime]="recordWeatherTime"></temp-details></div>
+            <div class="col-md-12"><weather-details :weatherTime="recordWeatherTime"></weather-details></div>
         </div>
-        <div class="row recordList" v-for="time in recordsTimes">
+        <div class="row recordList" v-for="time in recordsTimes"  v-on:click="sendWeatherTimeToTempComp(time)">
             <div class="col-md-12">
                 {{ time}}
             </div>
@@ -18,13 +18,31 @@
 </template>
 
 <script>
+    import WeatherStore from '../services/weatherStore';
+
+    let recordsTimes = [];
+    let recordWeatherTime = undefined;
     export default {
         name: "weather-records",
+        created() {
+          console.log("weather records created");
+          new WeatherStore().getWeatherSubscription().subscribe((currentWeather) => {
+              console.log("currentWeather got,"+ JSON.stringify(currentWeather));
+              console.log(recordsTimes);
+              recordsTimes.push(currentWeather.time);
+          });
+        },
         data() {
             return {
-                recordWeatherTime: undefined,
-                recordsTimes: undefined,
-                time: undefined
+                recordWeatherTime,
+                recordsTimes
+            }
+        },
+
+        methods: {
+            sendWeatherTimeToTempComp(recordWeatherTime) {
+                console.log("click on sendWeatherTimeToTempComp");
+                this.recordWeatherTime = recordWeatherTime;
             }
         }
     }

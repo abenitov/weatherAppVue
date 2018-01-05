@@ -2,7 +2,7 @@
     <div>
     <header>
         <nav>
-            <router-link class="link" to="" v-t="'LIT_DASHBOARD'"></router-link> |
+            <router-link class="link" to="/" v-t="'LIT_DASHBOARD'"></router-link> |
             <router-link class="link" to="/currentTemp" v-t="'LIT_CURRENT_TEMP'"></router-link> |
             <router-link class="link" to="/history" v-t="'LIT_RECORDS'"></router-link>
         </nav>

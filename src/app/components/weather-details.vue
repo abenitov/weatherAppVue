@@ -27,13 +27,44 @@
 </template>
 
 <script>
+
+    import WeatherStore from "../services/weatherStore";
+
+    var weatherDetails;
+    var weatherStore;
     export default {
         name: "weather-details",
+        props:['weatherTime'],
+        created() {
+            console.log("weather details created");
+            weatherStore = new WeatherStore();
+            if(this.weatherTime){
+                console.log("weatherTime:"+this.weatherTime);
+                this.weatherDetails = weatherStore.getWeatherByTime(this.weatherTime);
+                console.log("new WeatherDetails:" + weatherStore.getWeatherByTime(this.weatherTime));
+
+
+            } else{
+                weatherStore.getWeatherSubscription().subscribe((currentWeather) => {
+                    console.log(currentWeather);
+                    this.weatherDetails = currentWeather;
+
+                });
+            }
+
+        },
         data() {
            return {
-               weatherDetails: undefined
+               weatherDetails
            }
 
+        },
+        watch: {
+            weatherTime: (newWeatherTime, oldWeatherTime) => {
+                console.log("weatherTime change from " + oldWeatherTime + " to " + newWeatherTime);
+                this.weatherDetails = weatherStore.getWeatherByTime(newWeatherTime);
+                console.log("new WeatherDetails:" + JSON.stringify(this.weatherDetails));
+             }
         }
     }
 </script>

@@ -1,39 +1,49 @@
 import Rx from 'rxjs/Rx';
+
+let instance = null;
+
 export default class WeatherStore {
 
 
-    constructor() {
+
+     constructor(){
+         if(!instance){
+             console.log("init weatherStore");
+             this.newWeather = new Rx.Subject();
+             this.weatherMap = new Map();
+             this.currentWeather = undefined;
+             instance = this;
+         }
+
+         return instance;
+     }
 
 
-        this.currentWeather;
-        this.weatherMap = new Map();
-        this.newWeather = new Rx.Subject();
-    }
-
-    getWeatherByTime(time) {
+     getWeatherByTime(time) {
         return this.weatherMap.get(time);
 
     }
 
-    saveWeather(weather) {
+     saveWeather(weather) {
 
         const time = new Date();
         weather["time"] = time.getTime().toString();
         this.currentWeather = weather;
+        console.log("saving weather," + JSON.stringify(weather));
         this.weatherMap.set(time.getTime().toString(), weather);
         this.newWeather.next(this.currentWeather);
     }
 
-    getWeatherMap() {
+     getWeatherMap() {
 
         return this.weatherMap;
     }
 
-    getCurrentWeather() {
+     getCurrentWeather() {
         return this.currentWeather;
     }
 
-    getWeatherSubscription() {
+     getWeatherSubscription() {
         return this.newWeather.asObservable();
     }
 

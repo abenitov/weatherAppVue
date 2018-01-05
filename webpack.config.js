@@ -47,8 +47,10 @@ var config = {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel-loader',
-                query: {
-                    presets: ['es2015']
+                options: {
+                    presets: ['es2015'],
+                    plugins: ['transform-class-properties']
+
                 }
             },
             {

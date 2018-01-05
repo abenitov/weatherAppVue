@@ -20,7 +20,11 @@
 
     export default {
         components: {WeatherDetails},
-        name: "weather-dashboard"
+        name: "weather-dashboard",
+        created() {
+            console.log("weather dashboard created");
+
+        }
     }
 </script>
 

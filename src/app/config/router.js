@@ -9,7 +9,7 @@ Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '', component: weatherDashboard
+        path: '/', component: weatherDashboard
     },
     {
         path: '/currentTemp', component: weatherDetails
