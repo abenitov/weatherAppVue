@@ -9,7 +9,7 @@ export default class WeatherStore {
      constructor(){
          if(!instance){
              console.log("init weatherStore");
-             this.newWeather = new Rx.Subject();
+             this.newWeather = new Rx.BehaviorSubject();
              this.weatherMap = new Map();
              this.currentWeather = undefined;
              instance = this;
@@ -44,7 +44,7 @@ export default class WeatherStore {
     }
 
      getWeatherSubscription() {
-        return this.newWeather.asObservable();
+        return this.newWeather;
     }
 
 }

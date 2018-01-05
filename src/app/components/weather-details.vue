@@ -46,8 +46,11 @@
 
             } else{
                 weatherStore.getWeatherSubscription().subscribe((currentWeather) => {
-                    console.log(currentWeather);
-                    this.weatherDetails = currentWeather;
+                    if(currentWeather){
+                        console.log("currentWeather from subscription:"+currentWeather);
+                        this.weatherDetails = currentWeather;
+                    }
+
 
                 });
             }

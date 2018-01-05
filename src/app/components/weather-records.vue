@@ -27,9 +27,12 @@
         created() {
           console.log("weather records created");
           new WeatherStore().getWeatherSubscription().subscribe((currentWeather) => {
-              console.log("currentWeather got,"+ JSON.stringify(currentWeather));
-              console.log(recordsTimes);
-              recordsTimes.push(currentWeather.time);
+              if(currentWeather){
+                  console.log("currentWeather got,"+ JSON.stringify(currentWeather));
+                  console.log(recordsTimes);
+                  recordsTimes.push(currentWeather.time);
+              }
+
           });
         },
         data() {
